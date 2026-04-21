@@ -13,7 +13,7 @@ class FavoriteDetailScreen extends StatelessWidget {
         title: Text(favoritePlace.title),
       ),
       body: Center(
-        child: Text('Details for ${favoritePlace.title}', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),),
+        child: Text(' ${favoritePlace.title}', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),),
       ),
     );
 }
