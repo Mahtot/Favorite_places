@@ -11,31 +11,33 @@ class NewFavoritePlaceScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add a new place')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(label: Text('Title')),
-              style: TextStyle(color: Colors.white),
-              controller: titleController,
-            ),
-            SizedBox(height: 12),
-            FilledButton.icon(
-              label: const Text('Add Place'),
-              icon: Icon(Icons.add),
-              onPressed: () {
-                ref
-                    .read(favoritePlaceProvider.notifier)
-                    .addPlace(titleController.text);
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text('Place added!')));
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(label: Text('Title')),
+                style: TextStyle(color: Colors.white),
+                controller: titleController,
+              ),
+              SizedBox(height: 12),
+              FilledButton.icon(
+                label: const Text('Add Place'),
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  ref
+                      .read(favoritePlaceProvider.notifier)
+                      .addPlace(titleController.text);
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Place added!')));
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
