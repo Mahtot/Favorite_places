@@ -2,44 +2,50 @@ import 'package:favorite_places/providers/favorite_places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewFavoritePlaceScreen extends ConsumerWidget {
+class NewFavoritePlaceScreen extends ConsumerStatefulWidget {
   const NewFavoritePlaceScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final titleController = TextEditingController();
+  ConsumerState<NewFavoritePlaceScreen> createState() => _NewFavoritePlaceScreenState();
+}
 
+class _NewFavoritePlaceScreenState extends ConsumerState<NewFavoritePlaceScreen> {
+  final titleController = TextEditingController();
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Add a new place')),
       body: SingleChildScrollView(
-        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               TextFormField(
                 decoration: const InputDecoration(label: Text('Title')),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 controller: titleController,
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               FilledButton.icon(
                 label: const Text('Add Place'),
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
-                  ref
-                      .read(favoritePlaceProvider.notifier)
-                      .addPlace(titleController.text);
+                  ref.read(favoritePlaceProvider.notifier).addPlace(titleController.text);
                   ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text('Place added!')));
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Place added!')));
                   Navigator.of(context).pop();
                 },
               ),
             ],
           ),
         ),
-      ),
+    
     );
   }
 }
