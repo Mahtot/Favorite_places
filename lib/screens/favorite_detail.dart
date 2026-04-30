@@ -9,12 +9,27 @@ class FavoriteDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(favoritePlace.title),
-      ),
-      body: Center(
-        child: Text(' ${favoritePlace.title}', style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),),
+      appBar: AppBar(title: Text(favoritePlace.title)),
+      body: Stack(
+        children: [Image.file(
+          favoritePlace.image,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
+        Positioned(
+          right:0,
+          left:0,
+          bottom:0,
+          child: Container(
+            height: 50,
+            color: const Color.fromARGB(255, 37, 37, 37),
+            alignment: Alignment.bottomCenter,
+            child:Text(favoritePlace.title, style: TextStyle(fontSize: 20, color: Colors.white),),
+          ),
+        )
+        ],
       ),
     );
-}
+  }
 }

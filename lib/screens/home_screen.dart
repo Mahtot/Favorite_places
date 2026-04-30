@@ -16,8 +16,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-     List<FavoritePlace> favoritePlaces = ref.watch(favoritePlaceProvider);
-     
+    List<FavoritePlace> favoritePlaces = ref.watch(favoritePlaceProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.onSecondary,
@@ -38,23 +38,33 @@ class HomeScreen extends ConsumerWidget {
                 style: TextStyle(color: Colors.white),
               ),
             )
-          : ListView.builder(
-              itemCount: favoritePlaces.length,
-              itemBuilder: (ctx, index) => InkWell(
-                onTap: (){
-                   Navigator.of(context).push(MaterialPageRoute
-                   (builder: (context) => FavoriteDetailScreen(favoritePlace: favoritePlaces[index]),)
-                   );
-                }, 
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
+          : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+                itemCount: favoritePlaces.length,
+                itemBuilder: (ctx, index) => ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => FavoriteDetailScreen(
+                          favoritePlace: favoritePlaces[index],
+                        ),
+                      ),
+                    );
+                  },
+                  leading: CircleAvatar(
+                    radius: 26,
+                    backgroundImage: FileImage(favoritePlaces[index].image),
+                  ),
+                  title: Text(
                     favoritePlaces[index].title,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium!.copyWith(color: Colors.white),
                   ),
                 ),
               ),
-            ),
+          ),
     );
   }
 }
