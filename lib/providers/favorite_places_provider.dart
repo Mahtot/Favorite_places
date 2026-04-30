@@ -11,4 +11,4 @@ class FavoritePlacesNotifier extends StateNotifier<List<FavoritePlace>> {
 
 final favoritePlaceProvider = StateNotifierProvider<FavoritePlacesNotifier, List<FavoritePlace>>((ref){
     return FavoritePlacesNotifier();
-});
+});       
