@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/legacy.dart';
 class FavoritePlacesNotifier extends StateNotifier<List<FavoritePlace>> {
   FavoritePlacesNotifier() : super([]);
 
-  void addPlace(String title, File image) {
-    state = [...state, FavoritePlace(title: title, image: image)];
+  void addPlace(String title, File image, PlaceLocation location) {
+    state = [...state, FavoritePlace(title: title, image: image, location: location)];
   }
 }
 
