@@ -62,6 +62,12 @@ class HomeScreen extends ConsumerWidget {
                       context,
                     ).textTheme.titleMedium!.copyWith(color: Colors.white),
                   ),
+                  subtitle: Text(
+                    favoritePlaces[index].location.address,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium!.copyWith(color: Colors.white70),
+                  ),
                 ),
               ),
           ),

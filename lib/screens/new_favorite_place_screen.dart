@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:favorite_places/models/favorite_place.dart';
 import 'package:favorite_places/providers/favorite_places_provider.dart';
 import 'package:favorite_places/widgets/image_input.dart';
 import 'package:favorite_places/widgets/location_input.dart';
@@ -17,6 +18,7 @@ class _NewFavoritePlaceScreenState
     extends ConsumerState<NewFavoritePlaceScreen> {
   final titleController = TextEditingController();
   File? _selectedImage;
+  PlaceLocation? _selectedLocation;
 
   @override
   void dispose() {
@@ -46,19 +48,23 @@ class _NewFavoritePlaceScreenState
             ),
 
             const SizedBox(height: 10),
-            LocationInput(),
+            LocationInput(
+              onSelectLocation: (location) {
+                _selectedLocation = location;
+              },
+            ),
             const SizedBox(height: 12),
 
             FilledButton.icon(
               label: const Text('Add Place'),
               icon: const Icon(Icons.add),
               onPressed: () {
-                if (titleController.text.isEmpty || _selectedImage == null) {
+                if (titleController.text.isEmpty || _selectedImage == null || _selectedLocation == null) {
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                        'Please enter a title and select an image!',
+                        'Please enter a title, select an image, and choose a location!',
                       ),
                     ),
                   );
@@ -66,7 +72,7 @@ class _NewFavoritePlaceScreenState
                 }
                 ref
                     .read(favoritePlaceProvider.notifier)
-                    .addPlace(titleController.text, _selectedImage!);
+                    .addPlace(titleController.text, _selectedImage!, _selectedLocation!);
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(
                   context,
@@ -78,5 +84,6 @@ class _NewFavoritePlaceScreenState
         ),
       ),
     );
+
   }
 }

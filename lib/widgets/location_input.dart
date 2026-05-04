@@ -59,14 +59,16 @@ class _LocationInputState extends State<LocationInput> {
       return;
     }
 
-    final url = Uri.parse(
-      'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=YOUR_API_KEY',
-    );
+    // final url = Uri.parse(
+    //   'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=YOUR_API_KEY',
+    // );
 
-    final response = await http.get(url);
-    final resData = json.decode(response.body);
-    final address = resData['results'][0]['formatted_address'];
+    // final response = await http.get(url);
+    // final resData = json.decode(response.body);
+    // final address = resData['results'][0]['formatted_address'];
+    final address = 'Sample Address'; // Replace with actual address from API
 
+    print('address: $address');
     setState(() {
       _pickedLocation = PlaceLocation(
         latitude: lat,
@@ -89,6 +91,15 @@ class _LocationInputState extends State<LocationInput> {
     );
     if (_isGettingLocation) {
       previewContent = const CircularProgressIndicator();
+    }
+    if (_pickedLocation != null) {
+      previewContent = Text(
+        _pickedLocation!.address,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+      );
     }
 
     return Column(

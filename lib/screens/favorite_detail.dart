@@ -11,23 +11,45 @@ class FavoriteDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(favoritePlace.title)),
       body: Stack(
-        children: [Image.file(
-          favoritePlace.image,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-        ),
-        Positioned(
-          right:0,
-          left:0,
-          bottom:0,
-          child: Container(
-            height: 50,
-            color: const Color.fromARGB(255, 37, 37, 37),
-            alignment: Alignment.bottomCenter,
-            child:Text(favoritePlace.title, style: TextStyle(fontSize: 20, color: Colors.white),),
+        children: [
+          Image.file(
+            favoritePlace.image,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
-        )
+          Positioned(
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 48,
+                  backgroundImage: FileImage(favoritePlace.image),
+                 foregroundColor: Colors.yellow,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.transparent, Colors.black54],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Text(
+                    favoritePlace.location.address,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
