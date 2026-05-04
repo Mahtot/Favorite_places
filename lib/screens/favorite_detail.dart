@@ -1,4 +1,5 @@
 import 'package:favorite_places/models/favorite_place.dart';
+import 'package:favorite_places/screens/map.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteDetailScreen extends StatelessWidget {
@@ -24,10 +25,15 @@ class FavoriteDetailScreen extends StatelessWidget {
             bottom: 0,
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 48,
-                  backgroundImage: FileImage(favoritePlace.image),
-                 foregroundColor: Colors.yellow,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => MapScreen(location: favoritePlace.location, isSelecting: false)));
+                  },
+                  child: CircleAvatar(
+                    radius: 48,
+                    backgroundImage: FileImage(favoritePlace.image),
+                   foregroundColor: Colors.yellow,
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
