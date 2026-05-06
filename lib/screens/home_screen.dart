@@ -5,17 +5,30 @@ import 'package:favorite_places/screens/new_favorite_place_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _addPlace(context) {
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (ctx) => NewFavoritePlaceScreen()));
   }
 
+  late Future<void> _placesFuture;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    _placesFuture = ref.read(favoritePlaceProvider.notifier).loadPlaces();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<FavoritePlace> favoritePlaces = ref.watch(favoritePlaceProvider);
 
     return Scaffold(
@@ -31,46 +44,35 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: favoritePlaces.isEmpty
-          ? const Center(
-              child: Text(
-                'No places added yet.',
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          : Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
+      body: FutureBuilder(
+        future: _placesFuture,
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+            ? const Center(child: CircularProgressIndicator())
+            : favoritePlaces.isEmpty
+            ? const Center(
+                child: Text('No places added yet. Start adding some!', style: TextStyle(color: Colors.white),),
+              )
+            : ListView.builder(
                 itemCount: favoritePlaces.length,
                 itemBuilder: (ctx, index) => ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: FileImage(favoritePlaces[index].image),
+                  ),
+                  title: Text(favoritePlaces[index].title),
+                  subtitle: Text(favoritePlaces[index].location.address),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FavoriteDetailScreen(
+                        builder: (ctx) => FavoriteDetailScreen(
                           favoritePlace: favoritePlaces[index],
                         ),
                       ),
                     );
                   },
-                  leading: CircleAvatar(
-                    radius: 26,
-                    backgroundImage: FileImage(favoritePlaces[index].image),
-                  ),
-                  title: Text(
-                    favoritePlaces[index].title,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleMedium!.copyWith(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    favoritePlaces[index].location.address,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium!.copyWith(color: Colors.white70),
-                  ),
                 ),
               ),
-          ),
+      ),
     );
   }
 }

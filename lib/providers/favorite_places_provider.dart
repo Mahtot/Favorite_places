@@ -22,7 +22,7 @@ Future<Database> _getDatabase() async {
 class FavoritePlacesNotifier extends StateNotifier<List<FavoritePlace>> {
   FavoritePlacesNotifier() : super([]);
 
-  void loadPlaces() async {
+  Future<void> loadPlaces() async {
     final db = await _getDatabase();
     final data = await db.query('user_places');
     final places = data
